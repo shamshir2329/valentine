@@ -28,6 +28,7 @@ body {
   box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
+/* Text */
 h1 { color: #ff4f7a; margin-bottom: 8px; }
 h2 { color: #ff4f7a; margin: 14px 0; }
 
@@ -63,11 +64,10 @@ button {
   color: #333;
 }
 
-/* NO button wiggle */
+/* No button wiggle */
 .rotate {
   animation: wiggle 0.6s ease;
 }
-
 @keyframes wiggle {
   0% { transform: rotate(0deg); }
   25% { transform: rotate(-10deg); }
@@ -77,14 +77,31 @@ button {
 }
 
 /* Slideshow */
-.slideshow {
-  margin-top: 14px;
-}
-
+.slideshow { margin-top: 14px; }
 .slide {
   width: 100%;
   border-radius: 16px;
   display: none;
+}
+
+/* Personal lines */
+.line {
+  margin-top: 12px;
+  font-size: 15px;
+  color: #444;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.line.show {
+  opacity: 1;
+}
+
+/* Final promise */
+#promiseBtn {
+  margin-top: 18px;
+  background: transparent;
+  color: #ff4f7a;
+  font-weight: 600;
 }
 
 /* Heart rain */
@@ -94,12 +111,8 @@ button {
   font-size: 22px;
   animation: fall 4s linear forwards;
 }
-
 @keyframes fall {
-  to {
-    transform: translateY(110vh);
-    opacity: 0;
-  }
+  to { transform: translateY(110vh); opacity: 0; }
 }
 
 .hidden { display: none; }
@@ -126,14 +139,28 @@ button {
 <!-- AFTER YES -->
 <div class="card hidden" id="love">
   <h1>I knew it ❤️</h1>
-  <p>You are my favorite part of every day.</p>
-  <p>Happy Valentine’s Day 🌹</p>
 
   <div class="slideshow">
     <img src="pic1.jpg" class="slide">
     <img src="pic2.jpg" class="slide">
     <img src="pic3.jpg" class="slide">
   </div>
+
+  <!-- Personal lines -->
+  <div id="lines">
+    <div class="line">You make ordinary days feel safe.</div>
+    <div class="line">You believe in me when I’m tired.</div>
+    <div class="line">You are my calm, my chaos, my home.</div>
+  </div>
+
+  <button id="promiseBtn">One last thing…</button>
+</div>
+
+<!-- PROMISE SCREEN -->
+<div class="card hidden" id="promise">
+  <h1>Just so you know ❤️</h1>
+  <p>No matter what life looks like…</p>
+  <p><strong>I’m always on your side.</strong></p>
 </div>
 
 <!-- MUSIC -->
@@ -146,62 +173,66 @@ const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 const main = document.getElementById("main");
 const love = document.getElementById("love");
+const promise = document.getElementById("promise");
+const promiseBtn = document.getElementById("promiseBtn");
 const music = document.getElementById("music");
 
-/* Sweet NO button */
+/* NO button */
 const noTexts = ["No 🙈", "Hmm 😅", "Are you sure? 💖", "Try again 😌"];
 let noIndex = 0;
-
 noBtn.addEventListener("click", () => {
   noBtn.classList.add("rotate");
   noBtn.innerText = noTexts[noIndex];
   noIndex = (noIndex + 1) % noTexts.length;
-
-  setTimeout(() => {
-    noBtn.classList.remove("rotate");
-  }, 600);
+  setTimeout(() => noBtn.classList.remove("rotate"), 600);
 });
 
-/* YES button */
+/* YES */
 yesBtn.addEventListener("click", () => {
   main.classList.add("hidden");
   love.classList.remove("hidden");
   music.play();
   startHearts();
   startSlideshow();
+  showLines();
 });
 
-/* Heart rain */
+/* Promise */
+promiseBtn.addEventListener("click", () => {
+  love.classList.add("hidden");
+  promise.classList.remove("hidden");
+});
+
+/* Hearts */
 function startHearts() {
   setInterval(() => {
-    const heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
-    setTimeout(() => heart.remove(), 4000);
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerHTML = "❤️";
+    h.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 4000);
   }, 300);
 }
 
-/* ✅ BULLETPROOF SLIDESHOW (FIXED) */
+/* Slideshow */
 let slideIndex = 0;
-let slideshowTimer = null;
-
 function startSlideshow() {
   const slides = document.querySelectorAll(".slide");
-  if (!slides.length) return;
-
-  slides.forEach(s => s.style.display = "none");
-  slideIndex = 0;
   slides[0].style.display = "block";
-
-  if (slideshowTimer) clearInterval(slideshowTimer);
-
-  slideshowTimer = setInterval(() => {
+  setInterval(() => {
     slides[slideIndex].style.display = "none";
     slideIndex = (slideIndex + 1) % slides.length;
     slides[slideIndex].style.display = "block";
   }, 2500);
+}
+
+/* Personal lines fade-in */
+function showLines() {
+  const lines = document.querySelectorAll(".line");
+  lines.forEach((line, i) => {
+    setTimeout(() => line.classList.add("show"), i * 2000);
+  });
 }
 </script>
 
