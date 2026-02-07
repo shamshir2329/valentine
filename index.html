@@ -6,7 +6,6 @@
 <title>For Saniya ❤️</title>
 
 <style>
-/* ===== BASE ===== */
 body {
   margin: 0;
   height: 100vh;
@@ -18,7 +17,7 @@ body {
   overflow: hidden;
 }
 
-/* ===== CARD ===== */
+/* Card */
 .card {
   background: rgba(255,255,255,0.96);
   border-radius: 22px;
@@ -27,12 +26,6 @@ body {
   max-width: 360px;
   text-align: center;
   box-shadow: 0 20px 50px rgba(0,0,0,0.25);
-  animation: fadeIn 0.6s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
 }
 
 h1 { color: #ff4f7a; margin-bottom: 8px; }
@@ -44,7 +37,7 @@ p {
   margin: 6px 0;
 }
 
-/* ===== BUTTONS ===== */
+/* Buttons */
 .buttons {
   display: flex;
   justify-content: center;
@@ -58,7 +51,6 @@ button {
   border: none;
   font-size: 15px;
   cursor: pointer;
-  transition: transform 0.3s ease;
 }
 
 #yes {
@@ -84,7 +76,7 @@ button {
   100% { transform: rotate(0deg); }
 }
 
-/* ===== SLIDESHOW ===== */
+/* Slideshow */
 .slideshow {
   margin-top: 14px;
 }
@@ -95,7 +87,7 @@ button {
   display: none;
 }
 
-/* ===== HEART RAIN ===== */
+/* Heart rain */
 .heart {
   position: fixed;
   top: -10px;
@@ -116,7 +108,7 @@ button {
 
 <body>
 
-<!-- ===== FIRST SCREEN ===== -->
+<!-- FIRST SCREEN -->
 <div class="card" id="main">
   <h1>Hey Saniya ❤️</h1>
   <p>I have a small question…</p>
@@ -131,7 +123,7 @@ button {
   </div>
 </div>
 
-<!-- ===== AFTER YES ===== -->
+<!-- AFTER YES -->
 <div class="card hidden" id="love">
   <h1>I knew it ❤️</h1>
   <p>You are my favorite part of every day.</p>
@@ -144,7 +136,7 @@ button {
   </div>
 </div>
 
-<!-- ===== MUSIC ===== -->
+<!-- MUSIC -->
 <audio id="music" loop>
   <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
 </audio>
@@ -179,7 +171,7 @@ yesBtn.addEventListener("click", () => {
   startSlideshow();
 });
 
-/* Hearts animation */
+/* Heart rain */
 function startHearts() {
   setInterval(() => {
     const heart = document.createElement("div");
@@ -191,16 +183,21 @@ function startHearts() {
   }, 300);
 }
 
-/* Slideshow logic */
+/* ✅ BULLETPROOF SLIDESHOW (FIXED) */
 let slideIndex = 0;
+let slideshowTimer = null;
+
 function startSlideshow() {
   const slides = document.querySelectorAll(".slide");
-  if (slides.length === 0) return;
+  if (!slides.length) return;
 
-  slides.forEach(slide => slide.style.display = "none");
+  slides.forEach(s => s.style.display = "none");
+  slideIndex = 0;
   slides[0].style.display = "block";
 
-  setInterval(() => {
+  if (slideshowTimer) clearInterval(slideshowTimer);
+
+  slideshowTimer = setInterval(() => {
     slides[slideIndex].style.display = "none";
     slideIndex = (slideIndex + 1) % slides.length;
     slides[slideIndex].style.display = "block";
