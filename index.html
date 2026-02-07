@@ -17,7 +17,47 @@ body {
   overflow: hidden;
 }
 
-/* Card */
+/* ===== PRE INTRO ===== */
+#preIntro {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.pre-card {
+  background: rgba(255,255,255,0.96);
+  border-radius: 22px;
+  padding: 28px 22px;
+  width: 90%;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  animation: fadeUp 0.8s ease;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.pre-card h1 { color: #ff4f7a; margin-bottom: 10px; }
+.pre-card p { color: #555; margin-bottom: 16px; }
+
+#enterBtn {
+  padding: 14px 26px;
+  border-radius: 40px;
+  border: none;
+  background: #ff4f7a;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+/* ===== CARD ===== */
 .card {
   background: rgba(255,255,255,0.96);
   border-radius: 22px;
@@ -28,7 +68,6 @@ body {
   box-shadow: 0 20px 50px rgba(0,0,0,0.25);
 }
 
-/* Text */
 h1 { color: #ff4f7a; margin-bottom: 8px; }
 h2 { color: #ff4f7a; margin: 14px 0; }
 
@@ -38,7 +77,7 @@ p {
   margin: 6px 0;
 }
 
-/* Buttons */
+/* ===== BUTTONS ===== */
 .buttons {
   display: flex;
   justify-content: center;
@@ -64,7 +103,7 @@ button {
   color: #333;
 }
 
-/* No button wiggle */
+/* NO wiggle */
 .rotate {
   animation: wiggle 0.6s ease;
 }
@@ -76,7 +115,7 @@ button {
   100% { transform: rotate(0deg); }
 }
 
-/* Slideshow */
+/* ===== SLIDESHOW ===== */
 .slideshow { margin-top: 14px; }
 .slide {
   width: 100%;
@@ -84,7 +123,7 @@ button {
   display: none;
 }
 
-/* Personal lines */
+/* ===== PERSONAL LINES ===== */
 .line {
   margin-top: 12px;
   font-size: 15px;
@@ -92,11 +131,9 @@ button {
   opacity: 0;
   transition: opacity 1s ease;
 }
-.line.show {
-  opacity: 1;
-}
+.line.show { opacity: 1; }
 
-/* Final promise */
+/* ===== PROMISE BUTTON ===== */
 #promiseBtn {
   margin-top: 18px;
   background: transparent;
@@ -104,7 +141,7 @@ button {
   font-weight: 600;
 }
 
-/* Heart rain */
+/* ===== HEART RAIN ===== */
 .heart {
   position: fixed;
   top: -10px;
@@ -121,8 +158,17 @@ button {
 
 <body>
 
-<!-- FIRST SCREEN -->
-<div class="card" id="main">
+<!-- PRE INTRO -->
+<div id="preIntro">
+  <div class="pre-card">
+    <h1>Hey Saniya ❤️</h1>
+    <p>I made something for you.</p>
+    <button id="enterBtn">Tap to continue ✨</button>
+  </div>
+</div>
+
+<!-- MAIN QUESTION -->
+<div class="card hidden" id="main">
   <h1>Hey Saniya ❤️</h1>
   <p>I have a small question…</p>
   <p><strong>but it means everything to me.</strong></p>
@@ -136,7 +182,7 @@ button {
   </div>
 </div>
 
-<!-- AFTER YES -->
+<!-- LOVE SCREEN -->
 <div class="card hidden" id="love">
   <h1>I knew it ❤️</h1>
 
@@ -146,7 +192,6 @@ button {
     <img src="pic3.jpg" class="slide">
   </div>
 
-  <!-- Personal lines -->
   <div id="lines">
     <div class="line">You make ordinary days feel safe.</div>
     <div class="line">You believe in me when I’m tired.</div>
@@ -156,7 +201,7 @@ button {
   <button id="promiseBtn">One last thing…</button>
 </div>
 
-<!-- PROMISE SCREEN -->
+<!-- PROMISE -->
 <div class="card hidden" id="promise">
   <h1>Just so you know ❤️</h1>
   <p>No matter what life looks like…</p>
@@ -169,15 +214,23 @@ button {
 </audio>
 
 <script>
+const preIntro = document.getElementById("preIntro");
+const enterBtn = document.getElementById("enterBtn");
+const main = document.getElementById("main");
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
-const main = document.getElementById("main");
 const love = document.getElementById("love");
 const promise = document.getElementById("promise");
 const promiseBtn = document.getElementById("promiseBtn");
 const music = document.getElementById("music");
 
-/* NO button */
+/* Pre intro */
+enterBtn.addEventListener("click", () => {
+  preIntro.style.display = "none";
+  main.classList.remove("hidden");
+});
+
+/* Sweet NO */
 const noTexts = ["No 🙈", "Hmm 😅", "Are you sure? 💖", "Try again 😌"];
 let noIndex = 0;
 noBtn.addEventListener("click", () => {
@@ -227,7 +280,7 @@ function startSlideshow() {
   }, 2500);
 }
 
-/* Personal lines fade-in */
+/* Personal lines */
 function showLines() {
   const lines = document.querySelectorAll(".line");
   lines.forEach((line, i) => {
